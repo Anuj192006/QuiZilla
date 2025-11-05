@@ -1,5 +1,5 @@
 // src/services/api.js
-const BASE_URL = "http://localhost:3000/api/auth"; // adjust if needed
+const BASE_URL = "https://quizilla-0gjl.onrender.com/api/auth";
 
 // Signup
 export async function signup(data) {
