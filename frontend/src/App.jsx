@@ -1,12 +1,15 @@
-import { useState } from 'react'
-import './App.css'
-import AuthPage from './pages/Auth'
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import AuthPage from "./pages/Auth"
+import Dashboard from "./pages/Dashboard"
 
 function App() {
   return (
-    <>
-      <AuthPage/>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AuthPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

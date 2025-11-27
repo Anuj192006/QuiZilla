@@ -1,16 +1,17 @@
 import React, { useState } from "react"
 import { signup, login } from "../services/api"
+import { useNavigate } from "react-router-dom"
 
 function AuthPage() {
+  const navigate = useNavigate()
 
   const [isLogin, setIsLogin] = useState(true)
+  const [message, setMessage] = useState("")
   const [form, setForm] = useState({
     name: "",
     email: "",
-    password: "",
-    role: "STUDENT"
+    password: ""
   })
-  const [message, setMessage] = useState("")
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -22,18 +23,29 @@ function AuthPage() {
     setMessage("")
 
     try {
-      if(isLogin){
+      // ---------------------------- LOGIN ----------------------------
+      if (isLogin) {
         const res = await login({
           email: form.email,
           password: form.password
         })
-        console.log(res)
-        setMessage("Login successful")
-      }else{
-        const res = await signup(form)
-        console.log(res)
-        setMessage("Signup successful")
+
+        localStorage.setItem("token", res.token)
+        localStorage.setItem("user", JSON.stringify(res.user))
+
+        navigate("/dashboard")
+        return
       }
+
+      // ---------------------------- SIGNUP ----------------------------
+      const res = await signup({
+        name: form.name,
+        email: form.email,
+        password: form.password
+      })
+
+      navigate("/dashboard")
+
     } catch (err) {
       console.error(err)
       setMessage("Error: Something went wrong")
@@ -47,26 +59,21 @@ function AuthPage() {
       <form onSubmit={handleSubmit}>
         {!isLogin && (
           <>
-            <input  type="text"  name="name"  placeholder="Name" value={form.name}
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={form.name}
               onChange={handleChange}
-              required/>
-            <br />
-
-            <label>
-              <input type="radio" name="role"  value="STUDENT" checked={form.role === "STUDENT"} onChange={handleChange}/> Student
-            </label>
-
-            <label style={{marginLeft: "10px"}}>
-              <input type="radio" name="role" value="ADMIN" checked={form.role === "ADMIN"} onChange={handleChange} /> Admin
-            </label>
-
+              required
+            />
             <br />
           </>
         )}
 
-        <input 
-          type="email" 
-          name="email" 
+        <input
+          type="email"
+          name="email"
           placeholder="Email"
           value={form.email}
           onChange={handleChange}
@@ -74,7 +81,14 @@ function AuthPage() {
         />
         <br />
 
-        <input  type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required/>
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
         <br />
 
         <button type="submit">

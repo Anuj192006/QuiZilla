@@ -12,11 +12,32 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      Role     @default(STUDENT)
-  createdAt DateTime @default(now())
+  createdOrgs  Organisation[] @relation("CreatedOrgs")
+  memberships Membership[]
 }
 
-enum Role {
-  ADMIN
-  STUDENT
+model Organisation {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  ownerId     String   @db.ObjectId
+  owner       User     @relation("CreatedOrgs", fields: [ownerId], references: [id])
+  memberships Membership[]
+  tests       Test[]
+}
+
+model Membership {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String        @db.ObjectId
+  orgId          String        @db.ObjectId
+  user           User          @relation(fields: [userId], references: [id])
+  organisation   Organisation  @relation(fields: [orgId], references: [id])
+  joinedAt       DateTime      @default(now())
+}
+
+model Test {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  date           DateTime
+  orgId          String        @db.ObjectId
+  organisation   Organisation  @relation(fields: [orgId], references: [id])
 }
