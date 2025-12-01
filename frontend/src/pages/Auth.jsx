@@ -1,108 +1,144 @@
-import React, { useState } from "react"
-import { signup, login } from "../services/api"
-import { useNavigate } from "react-router-dom"
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/Auth.css';
 
-function AuthPage() {
-  const navigate = useNavigate()
-
-  const [isLogin, setIsLogin] = useState(true)
-  const [message, setMessage] = useState("")
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: ""
-  })
+function Auth() {
+  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setForm(prev => ({ ...prev, [name]: value }))
-  }
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+    setError('');
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setMessage("")
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
     try {
-      // ---------------------------- LOGIN ----------------------------
-      if (isLogin) {
-        const res = await login({
-          email: form.email,
-          password: form.password
-        })
+      const endpoint = isLogin ? '/auth/login' : '/auth/register';
+      const body = isLogin 
+        ? { email: formData.email, password: formData.password }
+        : formData;
 
-        localStorage.setItem("token", res.token)
-        localStorage.setItem("user", JSON.stringify(res.user))
+      const response = await fetch(`http://localhost:5001${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
 
-        navigate("/dashboard")
-        return
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Authentication failed');
       }
 
-      // ---------------------------- SIGNUP ----------------------------
-      const res = await signup({
-        name: form.name,
-        email: form.email,
-        password: form.password
-      })
-
-      navigate("/dashboard")
-
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userName', data.user.name);
+      navigate('/dashboard');
     } catch (err) {
-      console.error(err)
-      setMessage("Error: Something went wrong")
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <div>
-      <h2>{isLogin ? "Login" : "Signup"}</h2>
+    <div className="auth-page">
+      <div className="auth-container">
+        <div className="auth-header">
+          <div className="auth-logo">
+            <span className="logo-icon">📚</span>
+            <h1 className="logo-text">Quizilla</h1>
+          </div>
+          <p className="auth-subtitle">Your Ultimate Quiz Platform</p>
+        </div>
 
-      <form onSubmit={handleSubmit}>
-        {!isLogin && (
-          <>
+        <div className="auth-tabs">
+          <button 
+            className={`auth-tab ${isLogin ? 'active' : ''}`}
+            onClick={() => {
+              setIsLogin(true);
+              setError('');
+            }}
+          >
+            Login
+          </button>
+          <button 
+            className={`auth-tab ${!isLogin ? 'active' : ''}`}
+            onClick={() => {
+              setIsLogin(false);
+              setError('');
+            }}
+          >
+            Register
+          </button>
+        </div>
+
+        <form className="auth-form" onSubmit={handleSubmit}>
+          {!isLogin && (
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required={!isLogin}
+                placeholder="Enter your name"
+              />
+            </div>
+          )}
+
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
             <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              value={form.name}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               required
+              placeholder="Enter your email"
             />
-            <br />
-          </>
-        )}
+          </div>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-        />
-        <br />
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              placeholder="Enter your password"
+            />
+          </div>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
-        <br />
+          {error && <div className="error-message">{error}</div>}
 
-        <button type="submit">
-          {isLogin ? "Login" : "Signup"}
-        </button>
-      </form>
-
-      {message && <p>{message}</p>}
-
-      <button onClick={() => setIsLogin(!isLogin)}>
-        {isLogin ? "Need an account? Signup" : "Already have an account? Login"}
-      </button>
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading ? 'Please wait...' : (isLogin ? 'Login' : 'Register')}
+          </button>
+        </form>
+      </div>
     </div>
-  )
+  );
 }
 
-export default AuthPage
+export default Auth;

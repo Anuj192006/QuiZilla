@@ -1,0 +1,146 @@
+.leaderboard-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.leaderboard-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.leaderboard-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.test-info-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 8px 30px rgba(30, 58, 138, 0.3);
+}
+
+.test-info-card h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+}
+
+.test-info-card p {
+    margin: 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.leaderboard-container {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.table-header,
+.table-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 100px 120px 180px;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+}
+
+.table-header {
+    background: var(--bg-secondary);
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table-row {
+    background: var(--bg-secondary);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.table-row:hover {
+    border-color: var(--primary-color);
+    transform: translateX(8px);
+}
+
+.table-row.top-three {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+    border-color: var(--primary-color);
+}
+
+.rank-col {
+    text-align: center;
+}
+
+.rank-badge {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.name-col {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1.05rem;
+}
+
+.score-col {
+    text-align: center;
+}
+
+.score-badge {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.time-col {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.date-col {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+
+    .table-header,
+    .table-row {
+        grid-template-columns: 60px 1fr 80px;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .time-col,
+    .date-col {
+        display: none;
+    }
+}

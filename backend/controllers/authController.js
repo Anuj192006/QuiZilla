@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// ---------------------------- SIGNUP ----------------------------
+
 async function signup(req, res) {
   try {
     const { name, email, password } = req.body;
@@ -51,7 +51,6 @@ async function signup(req, res) {
   }
 }
 
-// ---------------------------- LOGIN ----------------------------
 async function login(req, res) {
   try {
     const { email, password } = req.body;

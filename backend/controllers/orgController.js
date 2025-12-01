@@ -12,7 +12,6 @@ async function createOrg(req, res) {
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-
     const newOrg = await prisma.organisation.create({
       data: {
         name,

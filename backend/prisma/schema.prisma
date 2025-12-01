@@ -12,39 +12,34 @@ model User {
   name      String
   email     String   @unique
   password  String
+  createdAt DateTime @default(now())
 
-  createdOrgs  Organisation[] @relation("OrgOwner")
-  memberships  Membership[]
+  createdOrgs Organisation[] @relation("CreatedOrgs")
+  joinedOrgs  Organisation[] @relation("JoinedOrgs", fields: [joinedOrgIds], references: [id])
+  joinedOrgIds String[]      @db.ObjectId
 }
 
 model Organisation {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-
   ownerId   String   @db.ObjectId
-  owner     User     @relation("OrgOwner", fields: [ownerId], references: [id])
+  password  String
+  joinCode  String   @unique
+  createdAt DateTime @default(now())
 
-  memberships  Membership[]
-  tests        Test[]
-}
-
-model Membership {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-
-  userId    String   @db.ObjectId
-  orgId     String   @db.ObjectId
-
-  user      User         @relation(fields: [userId], references: [id])
-  org       Organisation @relation(fields: [orgId], references: [id])
-
-  joinedAt  DateTime @default(now())
+  owner   User   @relation("CreatedOrgs", fields: [ownerId], references: [id])
+  members User[] @relation("JoinedOrgs", fields: [memberIds], references: [id])
+  memberIds String[] @db.ObjectId
+  tests   Test[]
 }
 
 model Test {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
-  date      DateTime
+  questions Json
+  attempts  Json     @default("[]")
+  orgId     String   @db.ObjectId
+  createdAt DateTime @default(now())
 
-  orgId     String        @db.ObjectId
-  org       Organisation  @relation(fields: [orgId], references: [id])
+  organisation Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
