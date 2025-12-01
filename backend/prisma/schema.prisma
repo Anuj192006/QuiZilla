@@ -12,32 +12,39 @@ model User {
   name      String
   email     String   @unique
   password  String
-  createdOrgs  Organisation[] @relation("CreatedOrgs")
-  memberships Membership[]
+
+  createdOrgs  Organisation[] @relation("OrgOwner")
+  memberships  Membership[]
 }
 
 model Organisation {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  ownerId     String   @db.ObjectId
-  owner       User     @relation("CreatedOrgs", fields: [ownerId], references: [id])
-  memberships Membership[]
-  tests       Test[]
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+
+  ownerId   String   @db.ObjectId
+  owner     User     @relation("OrgOwner", fields: [ownerId], references: [id])
+
+  memberships  Membership[]
+  tests        Test[]
 }
 
 model Membership {
-  id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  userId         String        @db.ObjectId
-  orgId          String        @db.ObjectId
-  user           User          @relation(fields: [userId], references: [id])
-  organisation   Organisation  @relation(fields: [orgId], references: [id])
-  joinedAt       DateTime      @default(now())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId    String   @db.ObjectId
+  orgId     String   @db.ObjectId
+
+  user      User         @relation(fields: [userId], references: [id])
+  org       Organisation @relation(fields: [orgId], references: [id])
+
+  joinedAt  DateTime @default(now())
 }
 
 model Test {
-  id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  title          String
-  date           DateTime
-  orgId          String        @db.ObjectId
-  organisation   Organisation  @relation(fields: [orgId], references: [id])
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  date      DateTime
+
+  orgId     String        @db.ObjectId
+  org       Organisation  @relation(fields: [orgId], references: [id])
 }

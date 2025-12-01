@@ -4,7 +4,8 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const authRoutes = require("./routes/authRoutes");
+const authRoutes = require("./routes/authRoutes.js");
+const orgRoutes = require("./routes/dashRoutes.js");
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
 
 // auth routes
 app.use("/api/auth", authRoutes);
+app.use("/api/orgs", orgRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
