@@ -28,10 +28,10 @@ function Dashboard() {
       const token = localStorage.getItem('token');
       
       const [createdRes, joinedRes] = await Promise.all([
-        fetch('http://localhost:5001/org/created', {
+        fetch('https://quizilla-0gjl.onrender.com/org/created', {
           headers: { 'Authorization': `Bearer ${token}` }
         }),
-        fetch('http://localhost:5001/org/joined', {
+        fetch('https://quizilla-0gjl.onrender.com/org/joined', {
           headers: { 'Authorization': `Bearer ${token}` }
         })
       ]);
@@ -54,7 +54,7 @@ function Dashboard() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/org/create', {
+      const response = await fetch('https://quizilla-0gjl.onrender.com/org/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ function Dashboard() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/org/join', {
+      const response = await fetch('https://quizilla-0gjl.onrender.com/org/join', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ function Dashboard() {
   const handleDeleteOrg = async (orgId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/org/${orgId}`, {
+      const response = await fetch(`https://quizilla-0gjl.onrender.com/org/${orgId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

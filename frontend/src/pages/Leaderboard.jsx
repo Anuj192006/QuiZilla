@@ -17,7 +17,7 @@ function Leaderboard() {
   const fetchLeaderboard = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/test/leaderboard/${id}`, {
+      const response = await fetch(`https://quizilla-0gjl.onrender.com/test/leaderboard/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 

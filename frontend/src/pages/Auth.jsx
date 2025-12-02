@@ -32,7 +32,7 @@ function Auth() {
         ? { email: formData.email, password: formData.password }
         : formData;
 
-      const response = await fetch(`http://localhost:5001${endpoint}`, {
+      const response = await fetch(`https://quizilla-0gjl.onrender.com${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

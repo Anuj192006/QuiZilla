@@ -17,7 +17,7 @@ function JoinedOrganization() {
   const fetchOrganization = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/org/${id}`, {
+      const response = await fetch(`https://quizilla-0gjl.onrender.com/org/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 

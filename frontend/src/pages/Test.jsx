@@ -30,7 +30,7 @@ function Test() {
   const fetchTest = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/test/single/${id}`, {
+      const response = await fetch(`https://quizilla-0gjl.onrender.com/test/single/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -76,7 +76,7 @@ function Test() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/test/attempt/${id}`, {
+      const response = await fetch(`https://quizilla-0gjl.onrender.com/test/attempt/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

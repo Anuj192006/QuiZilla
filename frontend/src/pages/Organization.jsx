@@ -22,7 +22,7 @@ function Organization() {
   const fetchOrganization = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/org/${id}`, {
+      const response = await fetch(`https://quizilla-0gjl.onrender.com/org/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -70,7 +70,7 @@ function Organization() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/test/create/${id}`, {
+      const response = await fetch(`https://quizilla-0gjl.onrender.com/test/create/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
