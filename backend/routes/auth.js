@@ -10,8 +10,6 @@ const prisma = new PrismaClient();
 router.post('/register', async (req, res) => {
     try {
         const { name, email, password } = req.body;
-
-        // Check if user exists
         const existingUser = await prisma.user.findUnique({
             where: { email }
         });
@@ -20,10 +18,9 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ error: 'Email already registered' });
         }
 
-        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create user
+
         const user = await prisma.user.create({
             data: {
                 name,
@@ -32,7 +29,7 @@ router.post('/register', async (req, res) => {
             }
         });
 
-        // Generate token
+
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
 
         res.status(201).json({
@@ -54,7 +51,6 @@ router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Find user
         const user = await prisma.user.findUnique({
             where: { email }
         });
@@ -63,14 +59,12 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Check password
         const isValidPassword = await bcrypt.compare(password, user.password);
 
         if (!isValidPassword) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Generate token
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
 
         res.json({
