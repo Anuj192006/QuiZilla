@@ -2,6 +2,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
+    min-height: calc(100vh - 80px);
 }
 
 .dashboard-header {
@@ -11,42 +12,76 @@
     margin-bottom: 3rem;
     flex-wrap: wrap;
     gap: 1.5rem;
+    padding: 2rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
 }
 
 .dashboard-header h1 {
     font-size: 2.5rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    background: linear-gradient(135deg,
+            var(--primary-color) 0%,
+            var(--secondary-color) 50%,
+            var(--accent-color) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin: 0;
+    letter-spacing: -0.02em;
 }
 
 .dashboard-actions {
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .create-btn,
 .join-btn {
-    padding: 0.875rem 1.75rem;
+    padding: 1rem 2rem;
     border: none;
-    border-radius: 12px;
+    border-radius: 14px;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.create-btn::before,
+.join-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.create-btn:hover::before,
+.join-btn:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
 .create-btn {
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
 }
 
 .create-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(30, 58, 138, 0.4);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
 }
 
 .join-btn {
@@ -59,6 +94,7 @@
     background: var(--primary-color);
     color: white;
     transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
 }
 
 .org-section {
@@ -70,6 +106,20 @@
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 1.5rem;
+    padding-left: 0.5rem;
+    position: relative;
+}
+
+.org-section h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 2px;
 }
 
 .org-grid {
@@ -83,9 +133,12 @@
     font-size: 1.1rem;
     text-align: center;
     padding: 3rem;
-    background: var(--bg-secondary);
-    border-radius: 12px;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
     grid-column: 1 / -1;
+    font-weight: 500;
 }
 
 .modal-overlay {
@@ -94,14 +147,14 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.75);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2000;
     padding: 2rem;
-    backdrop-filter: blur(4px);
-    animation: fadeIn 0.3s ease;
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes fadeIn {
@@ -116,23 +169,25 @@
 
 .modal {
     background: var(--card-bg);
-    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
     padding: 2.5rem;
     max-width: 500px;
     width: 100%;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    animation: scaleIn 0.3s ease;
+    box-shadow: var(--shadow-lg);
+    animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes scaleIn {
     from {
         opacity: 0;
-        transform: scale(0.9);
+        transform: scale(0.9) translateY(20px);
     }
 
     to {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1) translateY(0);
     }
 }
 
@@ -141,6 +196,7 @@
     font-weight: 700;
     color: var(--text-primary);
     margin: 0 0 1.5rem 0;
+    letter-spacing: -0.01em;
 }
 
 .modal-actions {
@@ -151,26 +207,38 @@
 
 .modal-actions button {
     flex: 1;
-    padding: 0.875rem;
+    padding: 1rem;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1rem;
 }
 
 .modal-actions button[type="button"] {
     background: var(--bg-secondary);
     color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.modal-actions button[type="button"]:hover {
+    background: var(--border-color);
+    color: var(--text-primary);
 }
 
 .modal-actions button[type="submit"] {
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
 }
 
 .modal-actions button:hover {
     transform: translateY(-2px);
+}
+
+.modal-actions button[type="submit"]:hover {
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
 }
 
 .loading {
@@ -178,4 +246,5 @@
     padding: 4rem;
     font-size: 1.5rem;
     color: var(--text-secondary);
+    font-weight: 500;
 }

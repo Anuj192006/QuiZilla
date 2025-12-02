@@ -18,7 +18,6 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-brand" onClick={() => navigate('/dashboard')}>
-          <span className="brand-icon">📚</span>
           <span className="brand-text">Quizilla</span>
         </div>
         

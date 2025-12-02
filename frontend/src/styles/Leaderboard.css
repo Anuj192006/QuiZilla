@@ -2,6 +2,7 @@
     max-width: 1000px;
     margin: 0 auto;
     padding: 2rem;
+    min-height: calc(100vh - 80px);
 }
 
 .leaderboard-header {
@@ -9,46 +10,84 @@
     align-items: center;
     gap: 2rem;
     margin-bottom: 2rem;
+    padding: 1.5rem 2rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
 }
 
 .leaderboard-header h1 {
     font-size: 2.5rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    background: linear-gradient(135deg,
+            var(--primary-color) 0%,
+            var(--secondary-color) 50%,
+            var(--accent-color) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin: 0;
+    letter-spacing: -0.02em;
 }
 
 .test-info-card {
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
-    padding: 2rem;
-    border-radius: 20px;
+    padding: 2.5rem;
+    border-radius: 24px;
     text-align: center;
     margin-bottom: 2.5rem;
-    box-shadow: 0 8px 30px rgba(30, 58, 138, 0.3);
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.test-info-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .test-info-card h2 {
     font-size: 1.75rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
+    position: relative;
+    z-index: 1;
 }
 
 .test-info-card p {
     margin: 0;
     font-size: 1.1rem;
     opacity: 0.9;
+    position: relative;
+    z-index: 1;
 }
 
 .leaderboard-container {
     background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
     padding: 2rem;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-lg);
 }
 
 .leaderboard-table {
@@ -64,7 +103,7 @@
     gap: 1rem;
     align-items: center;
     padding: 1rem 1.5rem;
-    border-radius: 12px;
+    border-radius: 14px;
 }
 
 .table-header {
@@ -74,22 +113,48 @@
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    border: 1px solid var(--border-color);
 }
 
 .table-row {
     background: var(--bg-secondary);
     border: 2px solid transparent;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.table-row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 14px 0 0 14px;
+    transform: scaleY(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.table-row:hover::before {
+    transform: scaleY(1);
 }
 
 .table-row:hover {
-    border-color: var(--primary-color);
+    border-color: rgba(124, 58, 237, 0.3);
     transform: translateX(8px);
+    box-shadow: var(--shadow-sm);
 }
 
 .table-row.top-three {
-    background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
-    border-color: var(--primary-color);
+    background: linear-gradient(135deg,
+            rgba(124, 58, 237, 0.1) 0%,
+            rgba(20, 184, 166, 0.1) 100%);
+    border-color: rgba(124, 58, 237, 0.3);
+}
+
+.table-row.top-three::before {
+    transform: scaleY(1);
 }
 
 .rank-col {
@@ -99,6 +164,7 @@
 .rank-badge {
     font-size: 1.5rem;
     font-weight: 700;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .name-col {
@@ -112,12 +178,13 @@
 }
 
 .score-badge {
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
+    padding: 0.5rem 1.25rem;
+    border-radius: 24px;
     font-weight: 700;
     display: inline-block;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
 }
 
 .time-col {
@@ -128,6 +195,7 @@
 .date-col {
     color: var(--text-secondary);
     font-size: 0.9rem;
+    font-weight: 500;
 }
 
 @media (max-width: 768px) {

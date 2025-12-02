@@ -61,7 +61,6 @@ function Auth() {
       <div className="auth-container">
         <div className="auth-header">
           <div className="auth-logo">
-            <span className="logo-icon">📚</span>
             <h1 className="logo-text">Quizilla</h1>
           </div>
           <p className="auth-subtitle">Your Ultimate Quiz Platform</p>
